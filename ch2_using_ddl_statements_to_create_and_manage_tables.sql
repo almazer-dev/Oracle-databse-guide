@@ -194,3 +194,49 @@ CREATE TABLE SHIPS(
 );
 
 DESC SHIPS
+
+create tabLE SHIPS(
+    SHIP_ID NUMBER,
+    SHIP_NAME VARCHAR2(20),
+    HOME_PORT_ID NUMBER NOT NULL,
+    CONSTRAINT SHIPS_PORTS_FK FOREIGN KEY (HOME_PORT_ID)
+               REFERENCES PORTS(PORT_ID)
+               ON DELETE SET NULL
+);
+INSERT INTO PORTS VALUES (1, 'TESTE1');
+INSERT INTO SHIPS VALUES (1, 'SHIP1', 1);
+DELETE FROM PORTS; -- erro se constraint not null  for aplicada na coluna que é foreign key e tem on delete set null
+                   -- tirando a constraint not null o delete from ports apaga e a coluna home_port_id é setada para null          
+
+create tabLE SHIPS(
+    SHIP_ID NUMBER,
+    SHIP_NAME VARCHAR2(20),
+    HOME_PORT_ID NUMBER,
+    CONSTRAINT SHIPS_PORTS_FK FOREIGN KEY (HOME_PORT_ID)
+               REFERENCES PORTS(PORT_ID)
+               ON DELETE CASCADE
+);
+                             
+CREATE TABLE VENDORS(
+    VENDOR_ID NUMBER,
+    VENDOR_NAME VARCHAR2(20),
+    STATUS NUMBER(1) CHECK( STATUS IN (4,5)),
+    CATEGORY VARCHAR2(5)
+);
+                           
+CREATE TABLE VENDORS(
+    VENDOR_ID NUMBER,
+    VENDOR_NAME VARCHAR2(20),
+    STATUS NUMBER(1),
+    CATEGORY VARCHAR2(5),
+    CONSTRAINT STATUS_CC CHECK( STATUS IN (4,5)) 
+);
+                               
+ALTER TABLE VENDORS MODIFY STATUS CHECK (STATUS IN (4,5));
+ALTER TABLE VENDORS MODIFY STATUS CONSTRAINT STATUS_C CHECK(STATUS IN (4,5));
+
+ALTER TABLE VENDORS ADD CHECK(STATUS IN (4,5));
+ALTER TABLE VENDORS ADD CONSTRAINT STATUS_CCCC CHECK(STATUS IN (5,6));
+ALTER TABLE VENDORS ADD CONSTRAINT STATUS_CCC CHECK(STATUS IN (4,5));                               
+                             
+                             
