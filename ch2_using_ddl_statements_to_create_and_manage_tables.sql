@@ -203,6 +203,26 @@ create tabLE SHIPS(
                REFERENCES PORTS(PORT_ID)
                ON DELETE SET NULL
 );
+                             
+CREATE TABLE SHIPS(
+    SHIP_ID NUMBER,
+    SHIP_NAME VARCHAR2(20),
+    HOME_PORT_ID NUMBER CONSTRAINT SHIPS_PORTS_FK REFERENCES PORTS (PORT_ID) ON DELETE SET NULL
+);    
+                             
+CREATE TABLE SHIPS(
+    SHIP_ID NUMBER,
+    SHIP_NAME VARCHAR2(20),
+    HOME_PORT_ID NUMBER REFERENCES PORTS (PORT_ID) ON DELETE SET NULL
+);                               
+
+CREATE TABLE SHIPS(
+    SHIP_ID NUMBER,
+    SHIP_NAME VARCHAR2(20),
+    HOME_PORT_ID NUMBER REFERENCES PORTS (PORT_ID) ON DELETE SET NULL
+);                             
+                             
+                             
 INSERT INTO PORTS VALUES (1, 'TESTE1');
 INSERT INTO SHIPS VALUES (1, 'SHIP1', 1);
 DELETE FROM PORTS; -- erro se constraint not null  for aplicada na coluna que é foreign key e tem on delete set null
@@ -239,4 +259,48 @@ ALTER TABLE VENDORS ADD CHECK(STATUS IN (4,5));
 ALTER TABLE VENDORS ADD CONSTRAINT STATUS_CCCC CHECK(STATUS IN (5,6));
 ALTER TABLE VENDORS ADD CONSTRAINT STATUS_CCC CHECK(STATUS IN (4,5));                               
                              
-                             
+-- DROP COLUMN FROM TABLE
+                                                               
+ALTER TABLE SHIPS DROP COLUMN SHIP_NAME;
+ALTER TABLE SHIPS DROP (SHIP_NAME) ;
+ALTER TABLE SHIPS DROP (SHIP_NAME, HOME_PORT_ID);
+ALTER TABLE SHIPS DROP (SHIP_ID, SHIP_NAME, HOME_PORT_ID); -- Erro. não pode remover todas as colunas de uma tabela.
+
+CREATE TABLE CRUISE_ORDERS(
+    CRUISE_ORDER_ID NUMBER,
+    ORDER_DATE DATE,
+    CONSTRAINT PK_CO PRIMARY KEY(CRUISE_ORDER_ID)
+);
+CREATE TABLE ORDER_RETURNS(
+    ORDER_RETURN_ID NUMBER,
+    CRUISE_ORDER_ID NUMBER,
+    CRUISE_ORDER_dATE DATE,
+    CONSTRAINT PK_OR PRIMARY KEY(ORDER_RETURN_ID),
+    CONSTRAINT FK_OR_CO FOREIGN KEY (CRUISE_ORDER_ID)
+               REFERENCES CRUISE_ORDERS(CRUISE_ORDER_ID) 
+);
+
+ALTER TABLE CRUISE_ORDERS DROP (CRUISE_ORDER_ID); -- Error ORA-12992: não é possível eliminar uma coluna-chave mãe                                                               
+ALTER TABLE CRUISE_ORDERS DROP (CRUISE_ORDER_ID) CASCADE CONSTRAINT;
+ALTER TABLE CRUISE_ORDERS DROP COLUMN CRUISE_ORDER_ID CASCADE CONSTRAINT;
+                                                               
+ALTER TABLE ORDER_RETURNS DROP COLUMN CRUISE_ORDER_ID;
+                                                               
+CREATE TABLE CRUISE_ORDERS(
+    CRUISE_ORDER_ID NUMBER,
+    ORDER_DATE DATE,
+    CONSTRAINT PK_CO PRIMARY KEY(CRUISE_ORDER_ID, ORDER_DATE)
+);
+CREATE TABLE ORDER_RETURNS(
+    ORDER_RETURN_ID NUMBER,
+    CRUISE_ORDER_ID NUMBER,
+    CRUISE_ORDER_dATE DATE,
+    CONSTRAINT PK_OR PRIMARY KEY(ORDER_RETURN_ID),
+    CONSTRAINT FK_OR_CO FOREIGN KEY (CRUISE_ORDER_ID, CRUISE_ORDER_DATE)
+               REFERENCES CRUISE_ORDERS(CRUISE_ORDER_ID, ORDER_DATE) 
+
+);                                                               
+ALTER TABLE ORDER_RETURNS DROP COLUMN CRUISE_ORDER_ID; -- ERRO ORA-12991: a coluna é indicada em uma restrição de várias colunas
+ALTER TABLE ORDER_RETURNS DROP ( CRUISE_ORDER_ID, CRUISE_ORDER_DATE);
+ALTER TABLE ORDER_RETURNS DROP ( CRUISE_ORDER_ID) CASCADE CONSTRAINTS;                                                              
+                                                               
