@@ -304,3 +304,13 @@ ALTER TABLE ORDER_RETURNS DROP COLUMN CRUISE_ORDER_ID; -- ERRO ORA-12991: a colu
 ALTER TABLE ORDER_RETURNS DROP ( CRUISE_ORDER_ID, CRUISE_ORDER_DATE);
 ALTER TABLE ORDER_RETURNS DROP ( CRUISE_ORDER_ID) CASCADE CONSTRAINTS;                                                              
                                                                
+
+-- SET UNUSED COLUMN
+                                                               
+alter table order_returns set unused column cruise_order_id; -- SE COLUNA TIVER CONSTRAINT DE VÁRIAS COLUNAS: ORA-12991: a coluna é indicada em uma restrição de várias colunas
+ALTER TABLE ORDER_RETURNS SET UNUSED COLUMN CRUISE_ORDER_ID CASCADE CONSTRAINTS;
+ALTER TABLE ORDER_RETURNS SET UNUSED (CRUISE_ORDER_DATE, FORM_TYPE, NAME_SUFFIX);
+
+SELECT * FROM USER_UNUSED_COL_TABS
+
+ALTER TABLE ORDER_RETURNS DROP UNUSED COLUMNS;
