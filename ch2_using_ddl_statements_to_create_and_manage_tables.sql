@@ -2,11 +2,11 @@
 
 CREATE TABLE "Companies" (company_id NUMBER);
 
-INSERT INTO INVENTORY.Companies VALUES (1); --FAIL
+INSERT INTO INVENTORY.Companies VALUES (1); --FAIL ORA-00942: a tabela ou view não existe
 INSERT INTO INVENTORY1."Companies" VALUES (1);
 COMMIT;
 
-SELECT * FROM Companies; --FAIL
+SELECT * FROM Companies; --FAIL ORA-00942: a tabela ou view não existe
 SELECT * FROM "Companies";
 
 CREATE TABLE "Company Employees" (
@@ -15,7 +15,7 @@ CREATE TABLE "Company Employees" (
 );
 
 SELECT * FROM "Company Employees";
-SELECT * FROM "company employees"; --FAIL
+SELECT * FROM "company employees"; --FAIL ORA-00942: a tabela ou view não existeggh
 
 -- Data Types for columns
 
@@ -40,7 +40,7 @@ select cast(4.56 as number(5,2)) from dual;
 select cast(4.5678 as number(5,2)) from dual;
 select cast(10.59 as number(4,2)) from dual;
 select cast(10.59 as number(4,1)) from dual;
-select cast(10.59 as number(3,2)) from dual; -- ERROR
+select cast(10.59 as number(3,2)) from dual; -- ERROR ORA-01438: valor maior que a precisão especificada usado para esta coluna
 
 select cast(1059.34 as number(5,-2)) from dual;
 select cast(999.34 as number(3,-2)) from dual;
@@ -314,3 +314,26 @@ ALTER TABLE ORDER_RETURNS SET UNUSED (CRUISE_ORDER_DATE, FORM_TYPE, NAME_SUFFIX)
 SELECT * FROM USER_UNUSED_COL_TABS
 
 ALTER TABLE ORDER_RETURNS DROP UNUSED COLUMNS;
+                                                               
+                                                                
+-- TRUNCATE DATA
+                                                               
+CREATE TABLE SHIPS(
+    SHIP_ID NUMBER,
+    SHIP_NAME VARCHAR2(20),
+    HOME_PORT_ID NUMBER,
+    CONSTRAINT SHIPS_PORTS_FK FOREIGN KEY (HOME_PORT_ID) REFERENCES PORTS(PORT_ID) on delete SET NULL
+);                                                              
+truncate table ports cascade; -- ORA-14705: chaves exclusiva ou primária na tabela referenciadas por chaves externas ativadas na tabela "ANGELOLMORACLE"."SHIPS"
+TRUNCATE TABLE PORTS; -- ORA-02266: chaves exclusiva/primária na tabela referenciadas por chaves externas ativadas
+                                                               
+CREATE TABLE SHIPS(
+    SHIP_ID NUMBER,
+    SHIP_NAME VARCHAR2(20),
+    HOME_PORT_ID NUMBER,
+    CONSTRAINT SHIPS_PORTS_FK FOREIGN KEY (HOME_PORT_ID) REFERENCES PORTS(PORT_ID) on delete CASCADE
+);                                                               
+truncate table ports ; -- ORA-02266: chaves exclusiva/primária na tabela referenciadas por chaves externas ativadas
+truncate table ports CASCADE;                                                               
+                                                               
+                                                               
