@@ -61,6 +61,44 @@ insert into cruises
 values
 (2, '101');
 
-select sysdate from dual;
+-- INSERT AND CONSTRAINTS
 
-select * From cruises;
+create table cruises (
+    CRUISE_ID NUMBER NOT NULL,
+    CRUISE_TYPE_ID NUMBER,
+    CRUISE_NAME VARCHAR2(20),
+    START_DATE DATE,
+    END_DATE DATE,
+    CONSTRAINT CRUISE_ID_PK PRIMARY KEY(CRUISE_ID),
+    CONSTRAINT CRUISE_NAME_CK CHECK(CRUISE_NAME IN ('Hawaii', 'Bahamas', 'Bermuda', 'Mexico', 'Day at Sea'))
+);
+
+insert into cruises(cruise_id, cruise_name)values (1, 'angelo'); --ORA-02290: restrição de verificação (ANGELOLMORACLE.CRUISE_NAME_CK) violada
+
+CREATE SEQUENCE SEQ_CRUISE_ID;
+
+INSERT INTO CRUISES(CRUISE_ID, CRUISE_NAME) VALUES(SEQ_CRUISE_ID.nextval, 'Hawaii');
+INSERT INTO CRUISES(CRUISE_ID, CRUISE_NAME) VALUES(SEQ_CRUISE_ID.nextval, 'Hawaii and Back'); --ORA-02290: restrição de verificação (ANGELOLMORACLE.CRUISE_NAME_CK) violada
+
+-- UPDATE
+
+update cruises set cruise_name = 'Bahamas', start_date= '1-12-11' WHERE CRUISE_ID = 1;
+
+update compensation set salary = salary * 1.03, last_changed_date = sysdate where employ_number = 83;
+
+create table projects(
+    project_id number primary key,
+    project_name varchar(20),
+    cost number,
+    constraint ck_cost check(cost < 1000000)  
+);
+
+insert into projects(project_id, project_name, cost) values (1, '', 340000);
+insert into projects(project_id, project_name, cost) values (2, '', 964000);
+insert into projects(project_id, project_name, cost) values (3, '', 12000);
+
+update projects set cost = cost * 1.2; -- ORA-02290: restrição de verificação (ANGELOLMORACLE.CK_COST) violada
+
+update projects set cost = cost * 1.2 where cost *1.2 < 1000000; -- duas linhas atualizadas
+
+
