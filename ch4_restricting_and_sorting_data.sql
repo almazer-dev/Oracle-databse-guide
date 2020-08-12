@@ -195,5 +195,59 @@ SELECT PORT_NAME
 FROM PORTS
 WHERE CAPACITY IS NOT NULL;
 
+-- SQL PLUS COMMANDS
 
+SELECT ROOM_NUMBER, STYLE, WINDOW
+FROM SHIP_CABINS
+WHERE ROOM_NUMBER = &NRO
+ORDER BY ROOM_NUMBER;
 
+SELECT ROOM_NUMBER, STYLE, WINDOW
+FROM SHIP_CABINS
+WHERE WINDOW = '&WNDW'
+ORDER BY win;
+
+SELECT &COLUMNS --ROOM_NUMBER, STYLE, WINDOW
+FROM SHIP_CABINS
+;
+
+DEFINE
+DEFINE WNDW = Ocean
+undefine wndw
+
+show all
+show define 
+show verify
+set verify off
+set ver on
+
+-- script
+prompt welcome to our script. This report will look up data
+prompt using the room number you provide
+accept vRoomNumber prompt "Enter the room number"
+SELECT ROOM_NUMBER, STYLE, WINDOW
+FROM SHIP_CABINS
+WHERE ROOM_NUMBER = &vRoomNumber
+ORDER BY ROOM_NUMBER;
+prompt Remenber you asked for information for roomm number &vRoomNumber
+
+show echo
+set echo on
+-- script
+set echo on
+set verify off
+
+set define off
+show define
+set define *
+show define
+
+SELECT ROOM_NUMBER, STYLE, WINDOW
+FROM SHIP_CABINS
+WHERE window = '&vWin';
+
+SELECT ROOM_NUMBER, STYLE, WINDOW
+FROM SHIP_CABINS
+WHERE window = '*vWin';
+
+set define ## -- apenas um caracter permitido
