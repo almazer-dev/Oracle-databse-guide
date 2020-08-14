@@ -251,3 +251,53 @@ FROM SHIP_CABINS
 WHERE window = '*vWin';
 
 set define ## -- apenas um caracter permitido
+
+-- ROW LIMITING CLAUSE
+
+SELECT * FROM ORDERS
+FETCH FIRST ROWS ONLY; -- retorna apenas uma linha
+
+SELECT * FROM ORDERS
+FETCH FIRST 8 ROWS ONLY;
+
+SELECT * FROM ORDERS
+FETCH 50 PERCENT ROWS ONLY;
+
+select * from ship_cabins
+fetch next  percent rows only; --	ORA-00904: "PERCENT": identificador inválido
+
+insert into ship_cabins values(107, 'Suite', 'Ocean');
+insert into ship_cabins values(108, 'Suite', 'Ocean');
+insert into ship_cabins values(109, 'Suite', 'Ocean');
+insert into ship_cabins values(110, 'Suite', 'Ocean');
+insert into ship_cabins values(111, 'Suite', 'Ocean');
+insert into ship_cabins values(112, 'Suite', 'Ocean');
+insert into ship_cabins values(113, 'Suite', 'Ocean');
+insert into ship_cabins values(114, 'Suite', 'Ocean');
+
+select * from ship_cabins
+order by window
+fetch first 50 percent rows only;
+
+select * from ship_cabins
+order by window
+fetch first 50 percent rows with ties;
+
+select * from ship_cabins
+fetch first 50 percent rows with ties;
+
+select * from ship_cabins
+order by room_number
+offset -1 rows fetch first 5 rows only;
+
+select * from ship_cabins
+order by room_number
+offset 5 rows fetch first 5 rows only;
+
+select * from ship_cabins
+order by room_number
+offset 10 rows fetch first 5 rows only;
+
+select * from ship_cabins
+order by room_number
+offset 15 rows fetch first 5 rows only;
