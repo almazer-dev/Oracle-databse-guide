@@ -56,3 +56,6 @@ SELECT SOUNDEX('Angelo'), soundex('angelica') from dual;
 -- NUMERIC FUNCTION
 SELECT CEIL(4.01) FROM DUAL;               
 select floor(3.99) from dual;	
+
+select round(12.355143, 2), round(259.99, -1), round(259.99) from dual;               
+select trunc(12.355143, 2), trunc(259.99, -1), trunc(259.99) from dual;                              
