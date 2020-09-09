@@ -57,11 +57,11 @@ SELECT SOUNDEX('Angelo'), soundex('angelica') from dual;
 SELECT CEIL(4.01) FROM DUAL;               
 select floor(3.99) from dual;	
 
-select round(12.355234, 2), round(259, -1), round(259.99), round(254,-1) from dual;               
+select round(12.355234, 2), round(259, -1), round(259.99), round(254,-1), round(259, -2) from dual;               
 select trunc(12.355143, 2), trunc(259.99, -1), trunc(259.99) from dual;      
 
-select remainder(9,3), remainder(10,3), remainder(11,3) from dual; -- retorna -1 se múltiplo mais próximo de n1 for maior que n1
-select mod(9,3), mod(10,3), mod(11,3) from dual;
+select remainder(9,3), remainder(10,3), remainder(11,3), remainder(23, 5) from dual; --remainder(x, y) retorna (x-múltiplo y mais próximo de x) se múltiplo de y mais próximo de x for maior que x
+select mod(9,3), mod(10,3), mod(11,3), mod(23, 5) from dual;
 
 
 select sysdate from dual;
@@ -73,7 +73,16 @@ select to_char(sysdate, 'dd/mm/yy hh24:mi:ss'), to_char(round(sysdate), 'dd/mm/y
 select to_char(to_date('01/09/20 12:00:00', 'dd/mm/yy hh24:mi:ss'), 'dd/mm/yy hh24:mi:ss') data_meio_dia, 
        to_char(round(to_date('01/09/20 12:00:00', 'dd/mm/yy hh24:mi:ss')), 'dd/mm/yy hh24:mi:ss') data_meio_dia_round from dual;
 
-select sysdate, trunc(sysdate, 'MM'), trunc(sysdate, 'RR') from dual;
+-- TRUNC FAZ PARECIDO COM O ROUND MAS SEMPRE ARREDONDANDO PARA PARA BAIXO
+select sysdate 
+, to_char(sysdate, 'dd/mm/yy hh24:mi:ss') 
+, to_char(trunc(sysdate, 'mi'), 'dd/mm/yy hh24:mi:ss' ) trunc_mi
+, to_char(trunc(sysdate, 'hh'), 'dd/mm/yy hh24:mi:ss' ) trunc_hh
+, to_char(trunc(sysdate, 'dd'), 'dd/mm/yy hh24:mi:ss') trunc_dd
+, trunc(sysdate, 'MM') trunc_mm
+, trunc(sysdate, 'RR') trunc_yy from dual;
+
+
 select to_char(to_date('01/09/20 12:00:00', 'dd/mm/yy hh24:mi:ss'), 'dd/mm/yy hh24:mi:ss') data_meio_dia, 
        to_char(trunc(to_date('01/09/20 12:00:00', 'dd/mm/yy hh24:mi:ss')), 'dd/mm/yy hh24:mi:ss') data_meio_dia_trunc from dual;
 
@@ -82,3 +91,68 @@ SELECT NEXT_DAY('01/09/20', 'sábado') from dual;
 select last_day('01/02/20'), last_day('01/02/21') from dual;
 
 select add_months('31/JAN/17', 1), add_months('01/NOV/17', 4), ADD_MONTHS('28/FEV/17', -1), ADD_MONTHS('01/FEV/17', -1) FROM DUAL;
+
+-- PRIMEIRO MES MENOS O SEGUNDO
+SELECT MONTHS_BETWEEN('01-01-17', '01-02-17') FROM DUAL;
+SELECT MONTHS_BETWEEN('01-01-17', '01-03-17') FROM DUAL;
+SELECT MONTHS_BETWEEN('10-08-17', '10-07-17') FROM DUAL;
+SELECT MONTHS_BETWEEN('12-06-14', '03-10-13') FROM DUAL;
+
+-- SEGUNDO PARAMETRO NÃO É CASE SENSITIV
+SELECT NUMTOYMINTERVAL(27, 'month'), NUMTOYMINTERVAL(27, 'YEAR') from dual;
+
+SELECT NUMTODSINTERVAL(27, 'DAY'), NUMTODSINTERVAL(27, 'HOUR'), NUMTODSINTERVAL(27, 'MINUTE'), NUMTODSINTERVAL(27, 'SECOND') FROM DUAL;
+
+SELECT substr(NUMTODSINTERVAL(24, 'DAY'), 7), NUMTODSINTERVAL(25, 'HOUR'), NUMTODSINTERVAL(25*60+1, 'MINUTE'), NUMTODSINTERVAL((25*60+1)*60+1, 'SECOND') FROM DUAL;
+
+-- OVER, PARTITION BY , ORDER BY
+
+create table ship_cabins_2(
+    ship_cabin_id number,
+    room_number number,
+    window varchar2(20),
+    sq_ft number
+);
+
+alter table ship_cabins_2 add constraint pk_ship_cabins primary key(ship_cabin_id);
+
+insert into ship_cabins_2 values(1,102, 'Ocean',533);
+insert into ship_cabins_2 values(2,103, 'Ocean',160);
+insert into ship_cabins_2 values(3,104, 'None',533);
+insert into ship_cabins_2 values(4,105, 'Ocean',205);
+insert into ship_cabins_2 values(5,106, 'None',586);
+insert into ship_cabins_2 values(6,107, 'None',1524);
+commit;
+
+select sum(sq_ft) from ship_cabins_2; 
+
+select sum(sq_ft) from ship_cabins_2; 
+
+select window, room_number, sq_ft, sum(sq_ft) --	ORA-00937: não é uma função de grupo de grupo simples
+from ship_cabins_2
+order by sq_ft;
+
+
+select window, room_number, sq_ft, 
+    sum(sq_ft) over (order by sq_ft) "running total",
+    sum(sq_ft) over (order by sq_ft rows between 1 preceding and 1 following) subset
+from
+ship_cabins_2
+order by
+    sq_ft;
+
+select window, room_number, sq_ft, 
+    sum(sq_ft) over (partition by window order by sq_ft) "running total",
+    sum(sq_ft) over (partition by window order by sq_ft rows between 1 preceding and 1 following) subset
+from
+ship_cabins_2
+order by
+    sq_ft;
+	
+select window, room_number, sq_ft, 
+    sum(sq_ft) over (partition by window order by sq_ft) "running total",
+    sum(sq_ft) over (partition by window order by sq_ft rows between 1 preceding and 1 following) subset
+from
+ship_cabins_2
+order by
+    room_number;	
