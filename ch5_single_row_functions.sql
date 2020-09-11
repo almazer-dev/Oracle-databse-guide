@@ -13,7 +13,7 @@ SELECT CONCAT('Hellow ', 'World!') from dual;
 
 SELECT 'Hellow, ' || 'World!' || 'Great to' || ' see you' from dual;               
 
-SELECT RPAD('Chapter One - I am Born', 40, '.') from dual;
+SELECT RPAD('Chapter One - I am Born', 40, '.'), rpad('Chapter One - I am Born', 40) from dual;
 
 SELECT  RPAD(CHAPTER_TITLE, 30, '.') || 
                LPAD(' ' || PAGE_NUMBER, 30, '.') FROM(               
@@ -30,7 +30,7 @@ SELECT  RPAD(CHAPTER_TITLE, 30, '.') ||
 ORDER BY PAGE_NUMBER ;
 
 SELECT RTRIM('Seven thousand----------', '-') FROM DUAL;
-SELECT LTRIM('----------Seven thousand', '-') FROM DUAL;
+SELECT LTRIM('----------Seven thousand', '-'), ltrim('        angelo') FROM DUAL;
 
 SELECT TRIM(LEADING '-' FROM '----------Seven thousand') FROM DUAL;
 SELECT TRIM(TRAILING '-' FROM 'Seven thousand----------') FROM DUAL;
@@ -60,7 +60,7 @@ select floor(3.99) from dual;
 select round(12.355234, 2), round(259, -1), round(259.99), round(254,-1), round(259, -2) from dual;               
 select trunc(12.355143, 2), trunc(259.99, -1), trunc(259.99) from dual;      
 
-select remainder(9,3), remainder(10,3), remainder(11,3), remainder(23, 5) from dual; --remainder(x, y) retorna (x-múltiplo y mais próximo de x) se múltiplo de y mais próximo de x for maior que x
+select remainder(9,3), remainder(10,3), remainder(11,3), remainder(23, 5) from dual; --remainder(x, y) retorna (x-múltiplo de y mais próximo de x). resultado negativo se múltiplo de y maior que x
 select mod(9,3), mod(10,3), mod(11,3), mod(23, 5) from dual;
 
 
@@ -124,7 +124,6 @@ insert into ship_cabins_2 values(5,106, 'None',586);
 insert into ship_cabins_2 values(6,107, 'None',1524);
 commit;
 
-select sum(sq_ft) from ship_cabins_2; 
 
 select sum(sq_ft) from ship_cabins_2; 
 
@@ -156,3 +155,53 @@ from
 ship_cabins_2
 order by
     room_number;	
+
+--LAG , LEAD
+select window, room_number, sq_ft, 
+    lag(sq_ft) over (order by window, sq_ft) lag,
+    lead(sq_ft) over (order by window, sq_ft) lead
+from
+ship_cabins_2
+order by
+    window, sq_ft;
+
+select window, room_number, sq_ft, 
+    lag(sq_ft) over (partition by window order by room_number) lag,
+    lead(sq_ft) over (partition by window order by room_number) lead
+from
+ship_cabins_2
+order by
+    room_number;
+	
+	
+select window, room_number, sq_ft, 
+    lag(sq_ft) over (order by window, sq_ft) lag,
+    lead(sq_ft) over (order by window, sq_ft) lead
+from
+ship_cabins_2
+order by
+    room_number;
+	
+select window, room_number, sq_ft, 
+    lag(sq_ft,2) over (order by window, sq_ft) lag,
+    lead(sq_ft) over (order by window, sq_ft) lead
+from
+ship_cabins_2
+order by
+    window, sq_ft;
+
+--STDDEV
+select avg(sq_ft), median(sq_ft), stddev(sq_ft), variance(sq_ft)
+from ship_cabins_2;
+
+select window, room_number, sq_ft,
+    variance(sq_ft) over(order by sq_ft) "variance",
+    stddev(sq_ft) over(order by sq_ft) "std_dev"
+from ship_cabins_2
+order by sq_ft;    	
+
+select window, room_number, sq_ft,
+    percentile_cont(.6)
+        within group(order by sq_ft) over(partition by window)
+from ship_cabins_2
+order by sq_ft;
