@@ -21,5 +21,17 @@ select to_number('$9,999.12', '$9,999.99') from dual;
 select to_number('$99,999.12', '$99,999.99') from dual;
 select to_number('$99,999.12', '$9,999.99') from dual; --ORA-01722: número inválido
 select to_number('$099,999.12', '$099,999.99') from dual;
+
+select to_number(' 12', '99') from dual; --?
 select to_number('2', 'B999') from dual; --?
-elect to_number('222', 'C999') from dual;--?
+select to_number('  12', '99') from dual; --?
+
+
+select to_number('222', 'C999') from dual;--?
+
+select to_number('1-', '9MI') from dual;
+select to_number('1 ', '9MI') from dual;
+select to_number('1 ', '9') from dual; --ORA-01722: número inválido
+
+select to_number('<1>', '99PR') from dual;
+select to_number('1', '99PR') from dual;
