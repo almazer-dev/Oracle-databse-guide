@@ -27,7 +27,9 @@ select to_number('2', 'B999') from dual; --?
 select to_number('  12', '99') from dual; --?
 
 
-select to_number('222', 'C999') from dual;--?
+select to_number('BRL200', 'C999') from dual;
+
+select to_number('123.1234', '999D9999') from dual;--ORA-01722: número inválido (Se o separador de decimal for "," e o agrupador for ".")
 
 select to_number('1-', '9MI') from dual;
 select to_number('1 ', '9MI') from dual;
@@ -35,3 +37,5 @@ select to_number('1 ', '9') from dual; --ORA-01722: número inválido
 
 select to_number('<1>', '99PR') from dual;
 select to_number('1', '99PR') from dual;
+
+select to_number('444,123.1234', '999G999D9999', 'nls_numeric_characters=''.,''' ) from dual;
