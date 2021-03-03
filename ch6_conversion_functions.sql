@@ -44,7 +44,9 @@ select to_number('444,123.1234', '999G999D9999', 'nls_numeric_characters=''.,'''
 select to_number('444;123.1234', '999G999D9999', 'nls_numeric_characters=''.;''' ) from dual;
 
 --L
-select to_number('R$4','L99') from dual;
+select to_number('R$4','L99') from dual; // se nls_currency for R$
+select to_number('$4', 'L99') from dual; // se nls_currency for $
+select to_number('$4','L9', 'nls_currency=''$''') from dual; //funciona independemente do nls_currency local                                           
 
 --MI
 select to_number('1-', '9MI') from dual;
