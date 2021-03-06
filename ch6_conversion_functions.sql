@@ -38,19 +38,24 @@ select to_number('USD200', 'C999') from dual;
 select to_number('123.1234', '999D9999') from dual;--ORA-01722: número inválido (Se o separador de decimal for "," e o agrupador for ".")
 
 --EEE
+select to_number('1.2E-33') from dual;
+select to_number('1.2E-33', 'EEEE') from dual;
+select to_number('1.2E-33','9.9EEE') from dual; -- ORA-01481: modelo inválido para formato de número
 
 --G
 select to_number('444,123.1234', '999G999D9999', 'nls_numeric_characters=''.,''' ) from dual;
 select to_number('444;123.1234', '999G999D9999', 'nls_numeric_characters=''.;''' ) from dual;
 
 --L
-select to_number('R$4','L99') from dual; // se nls_currency for R$
-select to_number('$4', 'L99') from dual; // se nls_currency for $
-select to_number('$4','L9', 'nls_currency=''$''') from dual; //funciona independemente do nls_currency local                                           
+select to_number('R$4','L99') from dual; -- se nls_currency for R$
+select to_number('$4', 'L99') from dual; -- se nls_currency for $
+select to_number('$4','L9', 'nls_currency=''$''') from dual; --funciona independemente do nls_currency local                                           
 
 --MI
+select to_number('1-') from dual; --ORA-01722: invalid number
 select to_number('1-', '9MI') from dual;
 select to_number('1 ', '9MI') from dual;
+select to_number('1 ') from dual;
 select to_number('1 ', '9') from dual; --ORA-01722: número inválido
 
 --pr
@@ -58,4 +63,21 @@ select to_number('<1>', '99PR') from dual;
 select to_number('1', '99PR') from dual;
 select to_number('<12,4>', '99D9pr') from dual;
 
-select to_number('123.1234', '999D9999', 'nls_numeric_characters=''.,''') from dual;
+--RN 
+-- formato apenas de saída. só funciona com to_char. (https://www.orafaq.com/forum/t/199599/)
+select to_char(10, 'RN') from dual;
+
+--S
+select to_number('5', 'S9') from dual;
+select to_number('5-', '9S') from dual;
+
+--TM
+-- formato apenas de saída. só funciona com to_char
+select to_char('500000000' ,'TME') from dual;
+select to_char('500000000' ,'TM9') from dual;
+select to_char('500000000' ,'TM') from dual;
+select to_char('5000000000000' ,'TME') from dual;
+
+--U
+select to_char(19, 'U99') from dual;
+select to_number('Cr$19', 'U99') from dual;
