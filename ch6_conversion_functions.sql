@@ -114,5 +114,5 @@ select to_char(10000.4, '$99,999.00') from dual;
 select to_char(9999.12, '9,999.99') from dual;
 select to_char(9999.12, '$9,999.99') from dual;
 select to_char(99999.12, '$999,999.99') from dual;
-select to_char(9999.12, '$9,999.99') from dual; --ORA-01722: número inválido
+select to_char(99999.12, '$9,999.99') from dual; --retorna a string ########## quando a entrada tem mais digitos do que o especificado no formato.
 select to_char(99999.12, '$099,999.99') from dual;
