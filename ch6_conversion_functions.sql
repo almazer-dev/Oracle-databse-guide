@@ -87,6 +87,7 @@ select to_char(19, 'U99') from dual;
 select to_number('Cr$19', 'U99') from dual;
 
 --V
+select to_char(10, '99V99') from dual -- só consegue encontrar aplicação na função to_char
 
 -- XXXX
 select to_number('123', 'XX') from dual; --	ORA-01722: invalid number
@@ -97,3 +98,21 @@ select to_number('#40.000,9','L999G999D99', 'nls_currency=''#'' nls_numeric_char
 select to_number('#40,000.9','L999G999D99', 'nls_currency=''#'' nls_numeric_characters=''.,''') from dual;
 select to_number('#40,000.9','L999G999D99', 'nls_currency=''#'' nls_numeric_characters=''.,'' nls_iso_currency=''BRAZIL''') from dual;
 select to_number('BRL40,000.9','C999G999D99', 'nls_currency=''#'' nls_numeric_characters=''.,'' nls_iso_currency=''BRAZIL''') from dual;
+
+
+     ---------------------
+----------TO_CHAR--------------
+     ---------------------
+-- character parameter	 
+select to_char('hello') from dual;	
+
+--number parameter
+select to_char(10000.4, '$99.999,00') from dual; -- error invalid number format model
+select to_char(10000.4, '$99G999D00', 'nls_numeric_characters='',.''') from dual;
+select to_char(10000.4, '$99,999.00') from dual;
+
+select to_char(9999.12, '9,999.99') from dual;
+select to_char(9999.12, '$9,999.99') from dual;
+select to_char(99999.12, '$999,999.99') from dual;
+select to_char(9999.12, '$9,999.99') from dual; --ORA-01722: número inválido
+select to_char(99999.12, '$099,999.99') from dual;
