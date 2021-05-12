@@ -33,6 +33,8 @@ select to_number('  12', '99') from dual; --?
 --C
 select to_number('BRL200', 'C999') from dual;
 select to_number('USD200', 'C999') from dual;                                           
+select to_number('BRL200', 'C999', 'nls_iso_currency=''BRAZIL''') from dual;
+select to_number('USD200', 'C999', 'nls_iso_currency=''AMERICA''') from dual;
 
 --D
 select to_number('123.1234', '999D9999') from dual;--ORA-01722: número inválido (Se o separador de decimal for "," e o agrupador for ".")
@@ -50,6 +52,8 @@ select to_number('444;123.1234', '999G999D9999', 'nls_numeric_characters=''.;'''
 select to_number('R$4','L99') from dual; -- se nls_currency for R$
 select to_number('$4', 'L99') from dual; -- se nls_currency for $
 select to_number('$4','L9', 'nls_currency=''$''') from dual; --funciona independemente do nls_currency local                                           
+select to_number('R$4','L9', 'nls_currency=''R$''') from dual;
+select to_number('#4','L9', 'nls_currency=''#''') from dual;
 
 --MI
 select to_number('1-') from dual; --ORA-01722: invalid number
@@ -81,3 +85,15 @@ select to_char('5000000000000' ,'TME') from dual;
 --U
 select to_char(19, 'U99') from dual;
 select to_number('Cr$19', 'U99') from dual;
+
+--V
+
+-- XXXX
+select to_number('123', 'XX') from dual; --	ORA-01722: invalid number
+select to_number('123', 'XXX') from dual; 
+
+--NLS parameter
+select to_number('#40.000,9','L999G999D99', 'nls_currency=''#'' nls_numeric_characters='',.''') from dual;
+select to_number('#40,000.9','L999G999D99', 'nls_currency=''#'' nls_numeric_characters=''.,''') from dual;
+select to_number('#40,000.9','L999G999D99', 'nls_currency=''#'' nls_numeric_characters=''.,'' nls_iso_currency=''BRAZIL''') from dual;
+select to_number('BRL40,000.9','C999G999D99', 'nls_currency=''#'' nls_numeric_characters=''.,'' nls_iso_currency=''BRAZIL''') from dual;
