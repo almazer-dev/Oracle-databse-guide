@@ -116,3 +116,25 @@ select to_char(9999.12, '$9,999.99') from dual;
 select to_char(99999.12, '$999,999.99') from dual;
 select to_char(99999.12, '$9,999.99') from dual; --retorna a string ########## quando a entrada tem mais digitos do que o especificado no formato.
 select to_char(99999.12, '$099,999.99') from dual;
+
+select to_char('007,3', '009D9') from dual; --ORA-01722: invalid number se D for igual a .
+select to_char('007,3', '009D9', 'nls_numeric_characters='',.''') from dual; --ORA-01722: invalid number se D for igual a .
+select to_char('07.3', '009D9') from dual;
+select to_char('07.3', '000000000000009D9') from dual; -- se D for igual  a ,
+select to_char(to_number('007,3', '009D9', 'nls_numeric_characters='',.''' ), '009D9') from dual;
+select to_char(to_number('007,3', '009D9', 'nls_numeric_characters='',.''' ), '009D9', 'nls_numeric_characters='',.''') from dual;
+select to_char(123.01, '99999999D9999') from dual;
+select to_char(123.01, '099999999D9999') from dual;
+
+
+
+--B
+?????????????????????????????
+
+--C
+select to_char(200, 'C999') from dual;
+select to_char(200, 'C999', 'nls_iso_currency=''BRAZIL''') from dual;
+
+--D
+select to_char('123', '999D9999') from dual;
+select to_char(123.01, '999D9999') from dual;
