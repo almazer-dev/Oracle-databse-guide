@@ -43,6 +43,7 @@ select to_number('123.1234', '999D9999') from dual;--ORA-01722: número inválid
 select to_number('1.2E-33') from dual;
 select to_number('1.2E-33', 'EEEE') from dual;
 select to_number('1.2E-33','9.9EEE') from dual; -- ORA-01481: modelo inválido para formato de número
+select to_number('1.2E-33','9.9EEEE') from dual
 
 --G
 select to_number('444,123.1234', '999G999D9999', 'nls_numeric_characters=''.,''' ) from dual;
@@ -138,3 +139,10 @@ select to_char(200, 'C999', 'nls_iso_currency=''BRAZIL''') from dual;
 --D
 select to_char('123', '999D9999') from dual;
 select to_char(123.01, '999D9999') from dual;
+
+--EEE
+select to_char(.00000000000000000000000000000000129, '99D9EEEE') from dual;
+select to_char(.00000000000000000000000000000000129, '99D9') from dual;
+select to_char(.00000000000000000000000000000000129, '99D9EEE') from dual; 	--ORA-01481: invalid number format model
+
+
