@@ -110,6 +110,7 @@ select to_char('hello') from dual;
 --number parameter
 select to_char(10000.4, '$99.999,00') from dual; -- error invalid number format model
 select to_char(10000.4, '$99G999D00', 'nls_numeric_characters='',.''') from dual;
+select to_char(10000.4, '$99G999D00', 'nls_numeric_characters=''.,''') from dual;
 select to_char(10000.4, '$99,999.00') from dual;
 
 select to_char(9999.12, '9,999.99') from dual;
@@ -139,10 +140,43 @@ select to_char(200, 'C999', 'nls_iso_currency=''BRAZIL''') from dual;
 --D
 select to_char('123', '999D9999') from dual;
 select to_char(123.01, '999D9999') from dual;
+select to_char('123.1234', '999D9999') from dual;
+select to_char('123.1234', '999D9999', 'nls_numeric_characters='',.''') from dual;
+select to_char('123.1234', '999D9999', 'nls_numeric_characters='';.''') from dual;
 
---EEE
+--EEEE
 select to_char(.00000000000000000000000000000000129, '99D9EEEE') from dual;
 select to_char(.00000000000000000000000000000000129, '99D9') from dual;
 select to_char(.00000000000000000000000000000000129, '99D9EEE') from dual; 	--ORA-01481: invalid number format model
 
+--G
+select to_char(10000.4, '$99G999D00', 'nls_numeric_characters='',.'''), 
+	   to_char(10000.4, '$99G999D00', 'nls_numeric_characters=''.,''') from dual;
+select to_char('78', '9G9'), 
+       to_char('00078', '09999G9999'), 
+	   to_char('78000', '99999G9') from dual;
 
+--R
+select to_char('4','L99') from dual;
+select to_char('4','L9', 'nls_currency=''$''') from dual;
+select to_char('4','L9', 'nls_currency=''R$''') from dual;
+select to_char('4','L9', 'nls_currency=''#''') from dual;
+
+--MI
+select to_CHAR('-1', '9MI') from dual;
+select to_CHAR('1', '9MI') from dual;
+
+--pr
+select to_char('1', '99PR') from dual;
+select to_char('-1', '99PR') from dual;
+select to_char('12.4', '99D9pr') from dual;
+select to_char('-12.4', '99D9pr') from dual;
+
+--RN 
+-- formato apenas de saída. só funciona com to_char. (https://www.orafaq.com/forum/t/199599/)
+select to_char(10, 'RN') from dual;
+
+--S
+select to_char('5', 'S9') from dual;
+select to_char('-5', '9S') from dual;
+select to_char('-5', 'S9') from dual;
