@@ -84,7 +84,6 @@ select to_char('500000000' ,'TM') from dual;
 select to_char('5000000000000' ,'TME') from dual;
 
 --U
-select to_char(19, 'U99') from dual;
 select to_number('Cr$19', 'U99') from dual;
 
 --V
@@ -92,6 +91,9 @@ select to_char(10, '99V99') from dual -- só consegue encontrar aplicação na f
 
 -- XXXX
 select to_number('123', 'XX') from dual; --	ORA-01722: invalid number
+select to_number('12', 'XX') from dual;
+select to_number('12', 'X') from dual; --	ORA-01722: invalid number
+select to_number('1', 'X') from dual; 
 select to_number('123', 'XXX') from dual; 
 
 --NLS parameter
@@ -154,9 +156,10 @@ select to_char(10000.4, '$99G999D00', 'nls_numeric_characters='',.'''),
 	   to_char(10000.4, '$99G999D00', 'nls_numeric_characters=''.,''') from dual;
 select to_char('78', '9G9'), 
        to_char('00078', '09999G9999'), 
+       to_char('00078', '9999G9999'),
 	   to_char('78000', '99999G9') from dual;
 
---R
+--L/
 select to_char('4','L99') from dual;
 select to_char('4','L9', 'nls_currency=''$''') from dual;
 select to_char('4','L9', 'nls_currency=''R$''') from dual;
@@ -180,3 +183,41 @@ select to_char(10, 'RN') from dual;
 select to_char('5', 'S9') from dual;
 select to_char('-5', '9S') from dual;
 select to_char('-5', 'S9') from dual;
+
+--TM
+-- formato apenas de saída. só funciona com to_char
+select to_char('500000000' ,'TME') from dual;
+select to_char('500000000' ,'TM9') from dual;
+select to_char('500000000' ,'TM') from dual;
+select to_char('5000000000000' ,'TME') from dual;
+select to_char('00000000005000000000000.00001' ,'TM') from dual;
+
+--U
+select to_char(19, 'U99') from dual;
+
+--V
+select to_char(10, '99V99') from dual -- só consegue encontrar aplicação na função to_char
+
+-- XXXX
+select to_char('1', 'X') from dual;
+select to_char('1', 'XX') from dual;
+select to_char('1', 'XXX') from dual;
+select to_char('1', 'XXXX') from dual;
+select to_char('12', 'X') from dual;
+select to_char('123', 'X') from dual;
+
+--NLS parameter
+select to_char(to_number('#40.000,9','L999G999D99', 'nls_currency=''#'' nls_numeric_characters='',.'''), 'L999G999D99', 'nls_currency=''&''') from dual;
+select to_char(to_number('#40,000.9','L999G999D99', 'nls_currency=''#'' nls_numeric_characters=''.,''')) from dual;
+select to_char(to_number('#40,000.9','L999G999D99', 'nls_currency=''#'' nls_numeric_characters=''.,'' nls_iso_currency=''BRAZIL''')
+          , 'L999G999D99', 'nls_iso_currency=''BRAZIL''') from dual;
+select to_char(to_number('BRL40,000.9','C999G999D99', 'nls_currency=''#'' nls_numeric_characters=''.,'' nls_iso_currency=''BRAZIL''')
+          , 'C999G999D99', 'nls_numeric_characters='',.''') from dual;
+
+
+-- date parameter
+select sysdate,  to_char(sysdate, 'DAY "THE" DD "OF" MONTH, RRRR') from dual;
+select sysdate,  to_char(sysdate, 'FMDAY "THE" DD "OF" MONTH, RRRR') from dual; -- remove espaços após o valor retornado em cada modelo de formato
+select sysdate,  to_char(sysdate, 'FMDay, "the" Dd "of" Month, RRRR') from dual;
+select sysdate,  to_char(sysdate, 'FMDay, "the" Ddth "of" Month, RRRR') from dual;
+select to_char(sysdate, 'HH24:MI:SS PM') from dual
