@@ -221,3 +221,17 @@ select sysdate,  to_char(sysdate, 'FMDAY "THE" DD "OF" MONTH, RRRR') from dual; 
 select sysdate,  to_char(sysdate, 'FMDay, "the" Dd "of" Month, RRRR') from dual;
 select sysdate,  to_char(sysdate, 'FMDay, "the" Ddth "of" Month, RRRR') from dual;
 select to_char(sysdate, 'HH24:MI:SS PM') from dual
+
+SELECT to_char(TO_DATE('01-JAN-49', 'DD-MON-YY'), 'YYYY'),
+       TO_CHAR(TO_DATE('01-JAN-50', 'DD-MON-YY'), 'YYYY'),
+       to_char(TO_DATE('01-JAN-49', 'DD-MON-YY'), 'RRRR'),
+       TO_CHAR(TO_DATE('01-JAN-50', 'DD-MON-YY'), 'RRRR'),
+       TO_CHAR(TO_DATE('01-JAN-49', 'DD-MON-RR'), 'RRRR'),
+       TO_CHAR(TO_DATE('01-JAN-50', 'DD-MON-RR'), 'RRRR'),
+       TO_CHAR(TO_DATE('01-JAN-49', 'DD-MON-RR'), 'YYYY'),
+       TO_CHAR(TO_DATE('01-JAN-50', 'DD-MON-RR'), 'YYYY') 
+FROM DUAL;
+
+SELECT TO_CHAR(TO_DATE('01-JUL-16 00-00-00','DD-MON-YY HH24-MI-SS'),'DD-MON-YY HH24-MI-SS PM'),
+       TO_CHAR(TO_DATE('01-JUL-16 00-00-00','DD-MON-YY HH24-MI-SS'),'DD-MON-YY HH12-MI-SS PM')
+       FROM DUAL; 
