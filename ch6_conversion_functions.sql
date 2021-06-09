@@ -235,3 +235,40 @@ FROM DUAL;
 SELECT TO_CHAR(TO_DATE('01-JUL-16 00-00-00','DD-MON-YY HH24-MI-SS'),'DD-MON-YY HH24-MI-SS PM'),
        TO_CHAR(TO_DATE('01-JUL-16 00-00-00','DD-MON-YY HH24-MI-SS'),'DD-MON-YY HH12-MI-SS PM')
        FROM DUAL; 
+	   
+
+select to_char(sysdate, 'dd-mm-rrrr hh24:mi:ss') from dual;
+
+-- AD/BC
+select to_char(to_date('1-JUL-16 00-00-00 BC','DD-MON-YY HH24-MI-SS ad'), 'dd-mm-rrrr hh24:mi:ss BC') from dual;
+select to_char(to_date('1-JUL-16 00-00-00 AD','DD-MON-YY HH24-MI-SS ad'), 'dd-mm-rrrr hh24:mi:ss BC') from dual;
+
+-- AM/PM
+exemplo acima
+
+--CC/SCC
+select
+    to_char(sysdate, 'CC'),
+    to_char(sysdate, 'SCCth'), 
+    to_char(to_date('01-01-1985', 'dd-mm-rrrr'), 'dd-mm-rrrr CCth'), 
+    to_char(to_date('01-01-2101', 'dd-mm-rrrr'), 'dd-mm-rrrr CCth') from dual;
+	
+-- D
+select to_char(sysdate, ' "The" Dth " day of the week"') from dual;
+
+-- 	DAY
+select to_char(sysdate, '" Day of the week" Day' ) from dual;
+	   
+-- DD
+exemplo acima
+
+--DL
+select to_char(sysdate, 'DL', 'nls_date_language=Portuguese' ) from dual;
+
+Não podem ser usados em função:
+NLS_LANGUAGE
+NLS_TERRITORY
+NLS_DATE_FORMAT
+
+--DS
+
