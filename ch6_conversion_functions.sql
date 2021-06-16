@@ -256,19 +256,134 @@ select
 -- D
 select to_char(sysdate, ' "The" Dth " day of the week"') from dual;
 
--- 	DAY
+-- DAY
 select to_char(sysdate, '" Day of the week" Day' ) from dual;
 	   
 -- DD
 exemplo acima
 
+-- DDD
+select to_char(sysdate, 'DDDth "Day of the year"') from dual;
+
 --DL
 select to_char(sysdate, 'DL', 'nls_date_language=Portuguese' ) from dual;
+select to_char(sysdate, 'DL', 'nls_date_language=''Portuguese''' ) from dual;
+select to_char(sysdate, 'DL', 'nls_date_language=''English''') from dual;
 
 Não podem ser usados em função:
 NLS_LANGUAGE
 NLS_TERRITORY
 NLS_DATE_FORMAT
 
---DS
+--DS definido pelos parametros acima
+select to_char(sysdate, 'DS' ) from dual;
 
+--DY
+select to_char(sysdate, 'DY') from dual;
+select to_char(sysdate, '"day of the week" DY') from dual;
+select to_char(sysdate, 'DY', 'nls_date_language=''Portuguese''') from dual;
+select to_char(sysdate, 'DY', 'nls_date_language=Portuguese') from dual;
+
+-- E
+select to_char(sysdate, '"Era atual é" E') from dual;--ORA-01822
+
+-- EE
+select to_char(sysdate, '"Era atual é" EE') from dual;--ORA-01822	
+
+-- FF
+select to_char(sysdate, 'DD-MM-YYYY HH24:MI:SS:FF') from dual; --ORA-01821: date format not recognized
+select to_char(cast (sysdate as timestamp), 'DD-MM-YYYY HH24:MI:SS:FF') from dual;
+
+-- FM 
+exemplo acima
+
+--FX 
+select to_date('10-06-2021', 'dd/mm/yyyy') from dual;
+select to_date('10-06-2021', 'fxdd/mm/yyyy') from dual; --	ORA-01861: literal does not match format string
+select to_date('10/06/2021', 'dd-mm-yyyy') from dual;
+select to_date('10/06/2021', 'fxdd-mm-yyyy') from dual; --	ORA-01861: literal does not match format string
+
+--HH/HH12
+exemplo acima
+
+--HH24
+exemplo acima
+
+--IW
+select to_char(sysdate, 'IW') from dual;
+
+-- I/IY/IYY
+select to_char(sysdate, 'I') from dual;
+select to_char(sysdate, 'IY') from dual;
+select to_char(sysdate, 'IYY') from dual;
+
+-- J
+select to_char(sysdate, 'J') from dual;
+
+-- MI
+exemplo acima
+
+-- MM
+exemplo acima
+
+--MON
+exemplo acima
+
+--MONTH
+exemplo acima
+
+--PR
+exemplo em to_char e to_number
+
+--Q
+select to_char(sysdate, 'Q') from dual;
+
+--RM
+select to_char(sysdate, 'RM') from dual;
+
+--RR
+exemplo acima
+
+-- RRRR
+exemplo acima
+
+--SS
+exemplo acima
+
+--SSSS
+select to_char(sysdate, 'SSSS') from dual;
+
+--TS
+select to_char(sysdate, 'TS') from dual;
+
+-- TZD / TZH / TZM / TZR
+valido apenas com timestamp ou interval
+select to_char( cast (sysdate as timestamp), 'TZD') from dual;
+select to_char( cast (sysdate as timestamp), 'TZH') from dual;--	ORA-01821: date format not recognized
+select to_char( cast (sysdate as timestamp), 'TZR') from dual;
+select to_char( cast (sysdate as timestamp), 'TZM') from dual;--	ORA-01821: date format not recognized
+
+-- WW
+mesma coisa do IW
+select to_char( sysdate, 'WWth "week of the year"') from dual;
+
+-- W
+select to_char( sysdate, 'Wth "week of the month"') from dual;
+
+--X
+select to_char(cast(sysdate as timestamp), 'SSXFF3') from dual;
+
+-- Y,YYY
+select to_char( sysdate, 'y,yyy') from dual;
+
+-- year/SYEAR
+select to_char( sysdate, 'year'), to_char( sysdate, 'SYEAR') from dual;
+
+--YYYY/SYYYY
+select to_char( sysdate, 'YYYY'), to_char( sysdate, 'SYYYY') from dual;
+
+-- YYY/YY/Y
+select to_char( sysdate, 'YYY'), to_char( sysdate, 'YY'), to_char( sysdate, 'Y') from dual;
+
+-- -/,.;:
+pontuação aceita e passada do mesmo jeito que aparece
