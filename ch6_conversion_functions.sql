@@ -387,3 +387,29 @@ select to_char( sysdate, 'YYY'), to_char( sysdate, 'YY'), to_char( sysdate, 'Y')
 
 -- -/,.;:
 pontuação aceita e passada do mesmo jeito que aparece
+
+-----------------
+---- to_date ----
+-----------------
+
+select to_date('2016-01-31', 'RRRR-MM-DD') FROM DUAL;
+
+--DL
+select to_date('Friday, June 18, 2021', 'DL') from dual;
+
+--J
+select to_date('2459384', 'J') from dual;
+
+--ww
+select to_date('25', 'ww') from dual; --ORA-01820: format code cannot appear in date input format
+
+
+
+-- to_timestamp
+select to_timestamp('2020-JAN-01 13:34:00.093423') from dual;
+
+--to_timestamp_tz
+select to_timestamp_tz('2021-06-18 00:40:01', 'YYYY-MM-DD HH24:MI:SS') from dual;
+
+--to_yminterval
+select to_yminterval('06-05') from dual;
