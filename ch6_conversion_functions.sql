@@ -407,9 +407,26 @@ select to_date('25', 'ww') from dual; --ORA-01820: format code cannot appear in 
 
 -- to_timestamp
 select to_timestamp('2020-JAN-01 13:34:00.093423') from dual;
-
+select to_timestamp('2020-JAN-01 13:34:00.093423', 'RRRR-MON-DD HH24:MI:SSxFF') from dual;
 --to_timestamp_tz
 select to_timestamp_tz('2021-06-18 00:40:01', 'YYYY-MM-DD HH24:MI:SS') from dual;
 
 --to_yminterval
 select to_yminterval('06-05') from dual;
+
+--to_dsinterval
+select to_dsinterval('40 8:30:00.03225') from dual;
+
+--numtoyminterval
+-- SEGUNDO PARAMETRO NÃO É CASE SENSITIV
+SELECT NUMTOYMINTERVAL(27, 'month'), NUMTOYMINTERVAL(27, 'YEAR') from dual;
+
+--numtodsinterval
+SELECT NUMTODSINTERVAL(27, 'DAY'), NUMTODSINTERVAL(27, 'HOUR'), NUMTODSINTERVAL(27, 'MINUTE'), NUMTODSINTERVAL(27, 'SECOND') FROM DUAL;
+
+SELECT substr(NUMTODSINTERVAL(24, 'DAY'), 7), NUMTODSINTERVAL(25, 'HOUR'), NUMTODSINTERVAL(25*60+1, 'MINUTE'), NUMTODSINTERVAL((25*60+1)*60+1, 'SECOND') FROM DUAL;
+
+--CAST
+select cast('19-jan-2016 11:35:30' as timestamp with local time zone),
+       cast(to_timestamp('19-jan-2016 11:35:30') as timestamp with local time zone)
+ from dual;
