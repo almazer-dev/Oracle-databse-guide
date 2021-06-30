@@ -430,3 +430,67 @@ SELECT substr(NUMTODSINTERVAL(24, 'DAY'), 7), NUMTODSINTERVAL(25, 'HOUR'), NUMTO
 select cast('19-jan-2016 11:35:30' as timestamp with local time zone),
        cast(to_timestamp('19-jan-2016 11:35:30') as timestamp with local time zone)
  from dual;
+
+
+--CASE
+select case 'option1'
+        when 'option1' then 'found it'
+        when 'option2' then 'not found it'
+        end as "Answer"
+from dual;
+
+
+select 
+    ship_name,
+	capacity
+    case capacity
+        when 2052 then 'MEDIUM'
+        when 2974 then 'LARGE'
+        end as cabin_size
+from
+	ship
+where
+	ship_id <= 4;    
+
+select 
+    'ship1' as ship_name,
+    case capacityy
+        when 2052 then 'MEDIUM'
+        when 2974 then 'LARGE'
+        when null then 'nulo'
+        end as cabin_size
+from
+    (select 2025 as capacityy from dual
+    union
+    select 2052 as capacityy from dual
+    UNION 
+    SELECT NULL AS CAPACITYY FROM DUAL);   
+
+--DECODE
+
+select decode (state, 'CA', 'California',
+					   'IL' 'Ilinois', 'other')
+from addresses;					   
+	
+ select 
+    'ship1' as ship_name,
+    decode(capacityy,
+        2052, 'MEDIUM',
+        2974, 'LARGE',
+        null, 'indefinido' -- se capacityy for null a comparação com null é true e 'indefinido'. decode compara null usando is null. Diferente do CASE.
+     ) as cabin_size
+from
+    (select 2025 as capacityy from dual
+    union
+    select 2052 as capacityy from dual
+    UNION 
+    SELECT NULL AS CAPACITYY FROM DUAL);	
+	
+-- NVL	
+select nvl(null, 0) first_answer,
+    14+null-4 second_answer,
+    14+nvl(null, 0) - 4 third_answer    
+from dual;	
+
+select nvl(123, 'g')  --ORA-01722: invalid number. as expressões precisam ser do mesmo tipo
+from dual;
