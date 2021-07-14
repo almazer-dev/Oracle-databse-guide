@@ -66,7 +66,8 @@ select to_number('1 ', '9') from dual; --ORA-01722: número inválido
 --pr
 select to_number('<1>', '99PR') from dual;
 select to_number('1', '99PR') from dual;
-select to_number('<12,4>', '99D9pr') from dual;
+select to_number('<12,4>', '99D9pr') from dual; -- número inválido se separador de decimal for '.'
+select to_number('<12,4>', '99D9pr', 'nls_numeric_characters=,.') from dual;
 
 --RN 
 -- formato apenas de saída. só funciona com to_char. (https://www.orafaq.com/forum/t/199599/)
